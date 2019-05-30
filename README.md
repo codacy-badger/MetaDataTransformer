@@ -1,5 +1,5 @@
 # MetaDataTransformer
-A Typescript compiler wrapper with reflection capabilities
+A typescript transpiler wrapper with reflection capabilities
 
 ## Prerequisites
  - npm
