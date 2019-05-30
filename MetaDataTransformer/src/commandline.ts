@@ -1,4 +1,4 @@
-import { CommandLineParser, CommandLineFlagParameter, CommandLineStringParameter, CommandLineAction } from '@microsoft/ts-command-line';
+import { CommandLineParser, CommandLineFlagParameter, CommandLineStringParameter, CommandLineAction, CommandLineChoiceParameter } from '@microsoft/ts-command-line';
 import * as ts from 'typescript';
 
 import { build, emit } from "./transpiler";
@@ -36,6 +36,12 @@ class BuildAction extends CommandLineAction {
     private _outDir: CommandLineStringParameter;
     private _outFile: CommandLineStringParameter;
     private _rootDir: CommandLineStringParameter;
+    private _module: CommandLineChoiceParameter;
+    private _moduleResolution: CommandLineChoiceParameter;
+    private _target: CommandLineChoiceParameter;
+    private _sourceMap: CommandLineFlagParameter;
+    private _sourceRoot: CommandLineStringParameter;
+    private _mapRoot: CommandLineStringParameter;
 
     public constructor() {
       super({
@@ -50,8 +56,24 @@ class BuildAction extends CommandLineAction {
         Logger.log(`RootDir: '${this._rootDir.value}'`);
         Logger.log(`OutDir: '${this._outDir.value}'`);
         Logger.log(`OutFile: '${this._outFile.value}'`);
+        Logger.log(`Module: '${this._module.value}'`);
+        Logger.log(`ModuleResolution: '${this._moduleResolution.value}'`);
+        Logger.log(`Target: '${this._target.value}'`);
+        Logger.log(`SourceMap: '${this._sourceMap.value}'`);
+        Logger.log(`SourceRoot: ${this._sourceRoot.value}`)
+        Logger.log(`MapRoot: ${this._mapRoot.value}`);
 
-        const program = build(this._pattern.value, this._outDir.value, this._outFile.value, this._rootDir.value);
+        const program = build(
+            this._pattern.value, 
+            this._outDir.value, 
+            this._outFile.value, 
+            this._rootDir.value, 
+            this._module.value, 
+            this._moduleResolution.value,
+            this._target.value,
+            this._sourceMap.value,
+            this._sourceRoot.value,
+            this._mapRoot.value);
         const result = emit(program);
 
         if(result.emitSkipped) {
@@ -102,6 +124,44 @@ class BuildAction extends CommandLineAction {
             parameterLongName: '--root-dir',
             description: 'The root directory',
             required: false
-        });        
+        });
+        this._module = this.defineChoiceParameter({
+            required: false,
+            defaultValue: 'None',
+            parameterLongName: '--module',
+            description: 'The module',
+            alternatives: [ 'None', 'CommonJS', 'AMD', 'UMD', 'System', 'ES2015', 'ESNext' ]
+        });
+        this._moduleResolution = this.defineChoiceParameter({
+            required: false,
+            defaultValue: 'Classic',
+            parameterLongName: '--module-resolution',
+            description: 'The module',
+            alternatives: [ 'Classic', 'NodeJs' ]
+        });
+        this._target = this.defineChoiceParameter({
+            required: false,
+            defaultValue: 'ES5',
+            parameterLongName: '--target',
+            description: 'The target',
+            alternatives: [ 'ES3', 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ESNext', 'JSON', 'Latest' ]
+        });
+        this._sourceMap = this.defineFlagParameter({
+            parameterLongName: '--source-map',
+            description: 'Should create source maps',
+            required: false
+        });
+        this._sourceRoot = this.defineStringParameter({ 
+            argumentName: "SOURCEROOT",
+            parameterLongName: '--source-root',
+            description: 'The source root',
+            required: false
+        });
+        this._mapRoot = this.defineStringParameter({ 
+            argumentName: "MAPROOT",
+            parameterLongName: '--map-root',
+            description: 'The map root',
+            required: false
+        });
     }
 }

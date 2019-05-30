@@ -9,16 +9,13 @@ import { AccessModifier } from './reflection';
 
 //TODO: flatten tsc output
 //TODO: npm install should not add it 's binaries to the top level folder but into node_modules/bin? because of --prefix
-//TODO: replace browsify with webpack?
-//TODO: correct build output (Emited files:, Could Not Find C:\Projects\MetaDataTransformerUsage\-f)
+//TODO: correct build output (Emited files:, )
 
 interface PropertyDeclaration {
     name: string;
     isOptional: boolean;
     isStatic: boolean;
     accessModifier: AccessModifier;
-
-    //tokens: string[];
 }
 interface MethodDeclaration {
 
@@ -65,7 +62,6 @@ export const metadataTransformer = <T extends ts.Node>(context: ts.Transformatio
                     isOptional: !isNullOrUndefined(member.questionToken),
                     accessModifier: getAccessModifier(children),
                     isStatic: isStatic(children)
-                    //tokens: flattenChildren(member).filter(child => !isNullOrUndefined(child) && !isNullOrUndefined(child.kind)).map(child => ts.SyntaxKind[child.kind])
                 } as PropertyDeclaration;
             });
     };
@@ -76,8 +72,6 @@ export const metadataTransformer = <T extends ts.Node>(context: ts.Transformatio
             ts.createPropertyAssignment("isOptional", ts.createLiteral(dec.isOptional)),
             ts.createPropertyAssignment("isStatic", ts.createLiteral(dec.isStatic)),
             ts.createPropertyAssignment("accessModifier", ts.createLiteral(dec.accessModifier))
-            
-            //ts.createPropertyAssignment("tokens", ts.createArrayLiteral(dec.tokens.map(modifier => ts.createLiteral(modifier))))
         ])));
 
         const methodDeclarations = createMethodDeclarations(declaration);
@@ -134,37 +128,3 @@ export const metadataTransformer = <T extends ts.Node>(context: ts.Transformatio
         return ts.visitEachChild(node, recursiveVisitor, context);
     };
 };
-
-
-/*
-import { AngularCompilerPlugin } from '@ngtools/webpack';
-
-const findAngularCompilerPlugin = (webpackCfg: any): AngularCompilerPlugin => {
-    return webpackCfg.plugins.find((plugin: any) =>  plugin instanceof AngularCompilerPlugin);
-};
-  
-const addTransformerToAngularCompilerPlugin = (acp: any, transformer: any): void => {
-    acp._transformers = [transformer, ...acp._transformers];
-};
-
-export default {
-    config(cfg: any) {
-      const angularCompilerPlugin = findAngularCompilerPlugin(cfg);
-  
-      if (!angularCompilerPlugin) {
-        console.error('Could not inject the typescript transformer: Webpack AngularCompilerPlugin not found');
-        return;
-      }
-  
-      addTransformerToAngularCompilerPlugin(angularCompilerPlugin, metadataTransformer);
-      return cfg;
-    }
-};*/
-
-
-//"start": "npm run rebuild && node dist/index.js",
-//(npm --prefix C:/Projects/SandboxProjects/MetaDataTransformer run start "C:\Users\ftr\Desktop\test\proj\src\test.ts") -and (npm --prefix C:/Users/ftr/Desktop/test/proj run rebuild)
-// npm run start -- -v build --pattern="C:\Users\ftr\Desktop\test\proj\src\*.ts" --out-dir="C:\Users\ftr\Desktop\test\proj\dist"
-// npm run rebuild && node dist/index.js "-v" "build" "--pattern=/src/**/*.ts" "--out-dir=dist" "--root-dir=C:\Users\ftr\Desktop\test\proj"
-// npm run start -- -v build --pattern="/src/**/*.ts" --out-dir="/dist" --root-dir="C:\Users\ftr\Desktop\test\proj"
-// npm run start -- -v build --pattern="/src/**/*.ts" --out-dir="./dist" --root-dir="C:\Users\ftr\Desktop\test\proj"

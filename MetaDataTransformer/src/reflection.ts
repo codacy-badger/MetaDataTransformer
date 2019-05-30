@@ -17,11 +17,13 @@ export interface IPropertyDeclaration {
 }
 
 export const reflection = {
-    getTypeDeclaration: (type: Function): IClassDeclaration => {
-        // getDeclartion should not be declared on every Function as not every function is a type
-        // users must know by themself if the given function is a valid argument for this method
+    isType: (type: Function): boolean => {
         const fnc = (type as any).getDeclartion;
-        if(!isNullOrUndefined(fnc) && typeof fnc === 'function') {
+        return !isNullOrUndefined(fnc) && typeof fnc === 'function';
+    },
+    getTypeDeclaration: (type: Function): IClassDeclaration => {
+        if(reflection.isType(type)) {
+            const fnc = (type as any).getDeclartion;
             return fnc();
         }
         throw 'The given object seems to be no type.';

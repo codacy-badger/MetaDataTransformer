@@ -29,19 +29,22 @@ const toAbsolute = (location: string, rootPath: string): string => {
         return location;
     }
     return path.join(rootPath, location);
-}
+};
 
-export const build = (pattern: string, outDir: string, outFile: string, rootDir: string): ts.Program => {
+export const build = (pattern: string, outDir: string, outFile: string, rootDir: string, module: string, moduleResolution: string, target: string, sourceMap: boolean, sourceRoot: string, mapRoot: string): ts.Program => {
     const options: ts.CompilerOptions = {
         rootDir: rootDir,
         outDir: toAbsolute(outDir, rootDir),
         outFile: toAbsolute(outFile, rootDir),
 
-        module: ts.ModuleKind.CommonJS,
-        moduleResolution: ts.ModuleResolutionKind.NodeJs,
-        target: ts.ScriptTarget.ES5
+        module: (isNullOrUndefined(module) || module == "") ? null : ts.ModuleKind[module],
+        moduleResolution: (isNullOrUndefined(moduleResolution) || moduleResolution == "") ? null : ts.ModuleResolutionKind[moduleResolution],
+        target: (isNullOrUndefined(target) || target == "") ? null : ts.ScriptTarget[target],
+        sourceMap: sourceMap,
+        sourceRoot: sourceRoot,
+        mapRoot: mapRoot
     };
-
+    
     const compilerHost = ts.createCompilerHost(options);
 
     const files = glob.sync(pattern,  { root: rootDir });

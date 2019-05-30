@@ -11,7 +11,7 @@
     "scripts": {
         "start": "npm run build && node dist/executable-index.js",
         "rebuild": "npm run clean && npm run build",
-        "build": "npm run restore && .\\tsc.cmd",
+        "build": "npm run restore && (if exist .\\tsc.cmd (.\\tsc.cmd) else (.\\node_modules\\.bin\\tsc.cmd))",
         "restore": "npm install",
         "clean": "(if exist node_modules rmdir node_modules /q /s) && (if exist dist rmdir dist /q /s) && (if exist package-lock.json del -f -q package-lock.json) && (if exist tsc del -f -q tsc) && (if exist tsc.cmd del -f -q tsc.cmd) && (if exist tsserver del -f -q tsserver) && (if exist tsserver.cmd del -f -q tsserver.cmd)"
     },

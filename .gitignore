@@ -1,0 +1,7 @@
+**/dist/
+**/node_modules/
+
+/MetaDataTransformer/tsc
+/MetaDataTransformer/tsc.cmd
+/MetaDataTransformer/tsserver
+/MetaDataTransformer/tsserver.cmd

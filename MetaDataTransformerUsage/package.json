@@ -2,13 +2,15 @@
     "name": "test",
     "version": "0.0.1",
     "scripts": {
-        "pack": "npm run rebuild && .\\node_modules\\.bin\\browserify.cmd dist/test.js > dist/bundle.js && del -f -q \".\\dist\\test.js\"",
+        "pack": "npm run rebuild && .\\node_modules\\.bin\\webpack.cmd --mode=\"development\" --devtool source-map dist/src/test.js -o dist/bundle.js && .\\node_modules\\.bin\\sorcery.cmd -i dist/bundle.js",
         "rebuild": "npm run clean && npm run build",
-        "build": "npm --prefix ./../MetaDataTransformer run rebuild && npm run restore && npm --prefix ./../MetaDataTransformer run start -- -v build --pattern=\"/**/*.ts\" --out-dir=\"./../dist\" --root-dir=\"%cd%\\src\"",
+        "build": "npm --prefix ./../MetaDataTransformer run rebuild && npm run restore && npm --prefix ./../MetaDataTransformer run start -- -v build --pattern=\"/src/**/*.ts\" --out-dir=\"./dist\" --root-dir=\"./../MetaDataTransformerUsage\" --module=CommonJS --module-resolution=NodeJs --target=ES5 --source-map --source-root=\".\\..\\..\\..\\..\" --map-root=\".\\..\"",
         "restore": "npm install && npm link .\\..\\MetaDataTransformer",
         "clean": "(if exist node_modules rmdir node_modules /q /s) && (if exist dist rmdir dist /q /s) && (if exist package-lock.json del -f -q package-lock.json)"
     },
     "devDependencies": {
-        "browserify": "^16.2.3"
+        "webpack": "^4.32.2",
+        "webpack-cli": "^3.3.2",
+        "sorcery": "^0.10.0"
     }
 }

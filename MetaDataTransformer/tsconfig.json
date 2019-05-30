@@ -3,7 +3,10 @@
       "module": "commonjs",
       "moduleResolution": "node",
       "target": "es6",
-      "outDir": "./dist"      
+      "outDir": "./dist",
+      "sourceMap": true,
+      "sourceRoot": "./../../../node_modules/metadatatransformer/src",
+      "mapRoot": "./../../../node_modules/metadatatransformer/dist/"
     },
     "include": [
         "src/**/*"
