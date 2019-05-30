@@ -40,6 +40,8 @@ class Test {
   ...
 }
 
-reflection.getTypeDeclaration(Test);
-reflection.isObjectValid({ }, Test);
+if(reflection.isType(Test)) {
+  reflection.getTypeDeclaration(Test);
+  reflection.isObjectValid({ }, Test);
+}
 ```
