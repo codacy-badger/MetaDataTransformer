@@ -31,9 +31,32 @@ Optional arguments:
   
 usage: tsca build [-h] --pattern PATTERN [--out-dir OUTDIR]
                   [--out-file OUTFILE] [--root-dir ROOTDIR]
+                  [--module {None,CommonJS,AMD,UMD,System,ES2015,ESNext}]
+                  [--module-resolution {Classic,NodeJs}]
+                  [--target {ES3,ES5,ES2015,ES2016,ES2017,ES2018,ESNext,JSON,Latest}]
+                  [--source-map] [--source-root SOURCEROOT]
+                  [--map-root MAPROOT]
 ```
 
 ## Reflection API
+
+```
+reflection.isType             => (type: Function): boolean;
+reflection.getTypeDeclaration => (type: Function): IClassDeclaration;
+reflection.isObjectValid      => (obj: any, type: Function): boolean;
+
+export interface IClassDeclaration {
+    properties: { [id: string] : IPropertyDeclaration }
+}
+
+export interface IPropertyDeclaration {
+    isOptional: boolean;
+    isStatic: boolean;
+    accessModifier: AccessModifier;
+}
+```
+
+## Reflection API usage
 
 ```
 import { reflection } from 'metadatatransformer';
