@@ -2,4 +2,5 @@ language: node_js
 
 
 before_script: cd MetaDataTransformerUsage
-script: cmd.exe /c npm run pack
+os: windows
+script: npm run pack
