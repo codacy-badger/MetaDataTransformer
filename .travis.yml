@@ -1,3 +1,5 @@
 language: node_js
 
+
+before_script: cd MetaDataTransformerUsage
 script: npm run pack
