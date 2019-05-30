@@ -30,3 +30,16 @@ Optional arguments:
 usage: tsca build [-h] --pattern PATTERN [--out-dir OUTDIR]
                   [--out-file OUTFILE] [--root-dir ROOTDIR]
 ```
+
+## Reflection API
+
+```
+import { reflection } from 'metadatatransformer';
+
+class Test {
+  ...
+}
+
+reflection.getTypeDeclaration(Test);
+reflection.isObjectValid({ }, Test);
+```
