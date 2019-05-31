@@ -2,6 +2,7 @@
 A typescript transpiler wrapper with reflection capabilities
 
 [![Build Status](https://travis-ci.com/NtFreX/MetaDataTransformer.svg?branch=master)](https://travis-ci.com/NtFreX/MetaDataTransformer)
+[![Build Status](https://dev.azure.com/ntfrex/MetaDataTransformer/_apis/build/status/NtFreX.MetaDataTransformer?branchName=master)](https://dev.azure.com/ntfrex/MetaDataTransformer/_build/latest?definitionId=1&branchName=master)
 
 ## Important notice
 This project is not stable and there are no plans to support the same features as the typescript cli. Maybe when the typescript team has decided on if, how and when they will support easy transformers pluggability I will tear the transformer out of this project and provide it standalone.
